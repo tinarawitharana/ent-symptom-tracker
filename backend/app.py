@@ -708,4 +708,4 @@ def handle_exception(e):
 if __name__ == '__main__':
     create_tables()  # This calls our new function
     port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=os.getenv('ENVIRONMENT') != 'production')
+    app.run(host='0.0.0.0', port=port, debug=False)
