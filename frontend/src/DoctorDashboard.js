@@ -17,7 +17,7 @@ function DoctorDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/status`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/doctor/dashboard`, {
         method: 'GET',
         credentials: 'include',
       });

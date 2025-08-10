@@ -24,7 +24,7 @@ function ConditionSelect() {
     };
 
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/status`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/conditions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

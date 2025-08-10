@@ -18,7 +18,7 @@ function PatientAnalytics() {
 
   const fetchPatientAnalytics = async () => {
     try {
-        const response = await fetch(`${config.API_BASE_URL}/api/status`, {
+        const response = await fetch(`${config.API_BASE_URL}/api/doctor/patient/<int:patient_id>/analytics`, {
 
         method: 'GET',
         credentials: 'include',

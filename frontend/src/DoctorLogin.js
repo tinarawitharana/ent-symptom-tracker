@@ -26,7 +26,7 @@ function DoctorLogin() {
     setError('');
 
     try {
-        const response = await fetch(`${config.API_BASE_URL}/api/status`, {
+        const response = await fetch(`${config.API_BASE_URL}/api/doctor/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

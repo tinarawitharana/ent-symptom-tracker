@@ -30,23 +30,13 @@ CORS(app,
      origins=[
          "http://localhost:3000", 
          "http://127.0.0.1:3000",
-         "https://*.vercel.app",  # This will allow any Vercel app
-         "https://*.netlify.app"   # Backup option
+         "https://ent-symptom-tracker.vercel.app"
      ],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"],
      supports_credentials=True)
 
-# Handle preflight requests
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = jsonify()
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization")
-        response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
+
 
 # --- User Loader for Flask-Login ---
 @login_manager.user_loader

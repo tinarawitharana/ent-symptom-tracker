@@ -17,7 +17,7 @@ function AIAnalysis() {
 
   const fetchPatientData = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/doctor/patient/${patientId}/analytics`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/doctor/patient/<int:patient_id>/analytics`, {
         method: 'GET',
         credentials: 'include',
       });
