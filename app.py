@@ -38,30 +38,7 @@ CORS(app,
      allow_headers=["Content-Type", "Authorization"],
      supports_credentials=True)
 
-# Add this after your CORS configuration
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = jsonify()
-        
-        # Get the origin from the request
-        origin = request.headers.get('Origin')
-        
-        # List of allowed origins (same as CORS config)
-        allowed_origins = [
-            "http://localhost:3000",
-            "http://127.0.0.1:3000", 
-            "https://ent-symptom-tracker.vercel.app"
-        ]
-        
-        # If origin is allowed, add headers
-        if origin in allowed_origins:
-            response.headers.add("Access-Control-Allow-Origin", origin)
-            response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization")
-            response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
-            response.headers.add('Access-Control-Allow-Credentials', 'true')
-        
-        return response
+
 
 
 # --- User Loader for Flask-Login ---
@@ -708,7 +685,7 @@ def patient_logs(patient_id):
     except Exception as e:
         return jsonify({'message': 'Logs error', 'error': str(e)}), 500
 
-@app.errorhandler(Exception)
+''' @app.errorhandler(Exception)
 def handle_exception(e):
     try:
         db.session.rollback()
@@ -717,9 +694,7 @@ def handle_exception(e):
     print(f"Unhandled exception: {str(e)}")
     response = jsonify({'message': 'Internal server error', 'error': str(e)})
     response.status_code = 500
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    return response
+    return response '''
 
 if __name__ == '__main__':
     create_tables()  # This calls our new function
