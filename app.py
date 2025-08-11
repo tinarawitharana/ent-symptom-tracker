@@ -4,13 +4,15 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 import os
-from config import Config
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
-app.config.from_object(Config)
+# Direct configuration
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://postgres:tina123@localhost:5432/postgres')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Session cookie configuration
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
