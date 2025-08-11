@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './styles.css';
+import config from './config';
 
 function AIAnalysis() {
   const { patientId } = useParams();
