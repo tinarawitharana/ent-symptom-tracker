@@ -38,6 +38,30 @@ CORS(app,
      allow_headers=["Content-Type", "Authorization"],
      supports_credentials=True)
 
+# Add this after your CORS configuration
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = jsonify()
+        
+        # Get the origin from the request
+        origin = request.headers.get('Origin')
+        
+        # List of allowed origins (same as CORS config)
+        allowed_origins = [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000", 
+            "https://ent-symptom-tracker.vercel.app"
+        ]
+        
+        # If origin is allowed, add headers
+        if origin in allowed_origins:
+            response.headers.add("Access-Control-Allow-Origin", origin)
+            response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization")
+            response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+            response.headers.add('Access-Control-Allow-Credentials', 'true')
+        
+        return response
 
 
 # --- User Loader for Flask-Login ---
