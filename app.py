@@ -28,7 +28,14 @@ login_manager.init_app(app)
 login_manager.session_protection = "strong"
 
 # CORS Configuration
+
+# Temporary wildcard CORS for testing
 CORS(app, 
+     origins="*",  # Allow all origins temporarily
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization"],
+     supports_credentials=False)  # Must be False with wildcard
+'''CORS(app, 
      origins=[
          "http://localhost:3000", 
          "http://127.0.0.1:3000",
@@ -36,7 +43,7 @@ CORS(app,
      ],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"],
-     supports_credentials=True)
+     supports_credentials=True) '''
 
 
 
