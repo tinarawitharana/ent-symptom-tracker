@@ -8,16 +8,24 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
+def get_database_url():
+    """Fix Railway's DATABASE_URL format for SQLAlchemy"""
+    database_url = os.environ.get('DATABASE_URL')
+    if database_url and database_url.startswith('postgres://'):
+        # Railway uses postgres:// but SQLAlchemy needs postgresql://
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    return database_url or 'postgresql://postgres:tina123@localhost:5432/postgres'
+
 app = Flask(__name__)
 # Direct configuration
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://postgres:tina123@localhost:5432/postgres')
+app.config['SQLALCHEMY_DATABASE_URI'] = get_database_url()  # Use the helper function
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Session cookie configuration
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_NAME'] = 'symptom_tracker_session'
 
@@ -29,13 +37,7 @@ login_manager.session_protection = "strong"
 
 # CORS Configuration
 
-# Temporary wildcard CORS for testing
 CORS(app, 
-     origins="*",  # Allow all origins temporarily
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization"],
-     supports_credentials=False)  # Must be False with wildcard
-'''CORS(app, 
      origins=[
          "http://localhost:3000", 
          "http://127.0.0.1:3000",
@@ -43,7 +45,7 @@ CORS(app,
      ],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"],
-     supports_credentials=True) '''
+     supports_credentials=True) 
 
 
 
